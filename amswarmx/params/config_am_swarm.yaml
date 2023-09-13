@@ -1,0 +1,140 @@
+# @@ Debugging Options
+verbose: 0      # Residual print = 1, 
+                # DistanceToGoal check = 2, 
+                # Collision print = 3, 
+                # Total compute time print = 4, 
+                # Individual compute time print = 5, 
+                # Grid planner verbose print = 6
+
+castray: false   # if false cast with robot radius 
+
+# @@
+visualize_am: true
+camera_follow_drone: 0
+
+# @@ Setting
+random_config: false    # random or default
+num_drone:     1
+cluster:       1       # number of drones in to solve in a single thread
+trials:        1
+write_files:   false
+
+num_obs: 1     
+
+# @@ For axis_wise set true otherwise quadratic
+axis_wise: false     
+jerk_snap_constraints: false
+
+# @@ CBF 
+gamma: 1.0
+
+# @@ Planning Parameters
+world:      2
+num:        40
+t_plan:     5
+num_up:     300
+dist_stop:  0.01
+free_space: true
+kappa:      5
+pieces:     1
+degree:     10
+sfcc:       false
+jps:        false
+path_replan: false 
+grid_margin: 0.15
+grid_resolution: 0.1
+visibility_margin: 0.12
+distance_to_obs_margin: 0.15
+
+# @@ Optimizer Parameters
+max_iter: 200                  
+max_time: 60
+thresold: 0.005
+
+order_smoothness:  3
+weight_goal:       5000    
+weight_smoothness: 150
+delta_aggressive:  1.0
+
+delta_static_obs: 1.20
+delta_drone:      1.15
+delta_vel:        1.33
+delta_acc:        1.30
+delta_jerk:       1.30
+delta_snap:       1.30
+delta_ineq:       1.30
+delta_sfc:        1.25
+
+rho_static_obs_max: 200000
+rho_drone_max:      200000
+rho_vel_max:        200000
+rho_acc_max:        200000
+rho_jerk_max:       200000
+rho_snap_max:       200000
+rho_ineq_max:       200000
+rho_sfc_max:        200000
+
+# true kinematic values
+vel_max: 1.5
+jerk_max: 8.0
+snap_max: 8.0
+
+# scaled thrust values 
+use_thrust_values: true
+gravity: 9.8
+f_max: 1.5    # 1.5g
+f_min: 0.3    # 0.3g
+
+
+acc_max: 2.8
+
+prox_agent: 0.2
+prox_obs: 0.2
+
+buffer: 0.07
+
+# @@ Crazyflie Configuration 
+a_drone: 0.10
+b_drone: 0.10
+c_drone: 0.20
+
+
+# @@ Room limits
+x_lim: [-150.0, 150.0]
+y_lim: [-150.0, 150.0]
+z_lim: [+0.3, 10.0]
+
+
+# @@ Obstacle Configuration 
+pos_static_obs: [[-20.0, 0.0, 0.0]]
+dim_static_obs: [[0.0001, 2.0, 10.5]]
+
+# @@ Start-Goal Configuration     
+# init_drone: [[-0.0, -0.0, +0.5]]
+
+# goal_drone: [[-0.0, -1.0, +0.5]]
+
+
+init_drone: [[-2.0, +2.0, +0.5],
+             [-0.5, +1.0, +0.5],
+             [-2.5, -2.0, +0.5],
+             [+2.5, -2.0, +0.5],
+             [-2.0, -1.5, +0.5],
+             [+0.0, +1.5, +0.5]]
+
+goal_drone: [[0.0, +1.0, +0.5],
+             [-2.0, -2.0, +0.5],
+             [+2.5, -2.0, +0.5],
+             [-2.5, -2.0, +0.5],
+             [+2.0, -1.5, +0.5],
+             [+0.0, +1.5, +0.5]]
+
+anchor_points: [
+                [[-0.0, +1.0, 0.5],
+                [-0.0, +1.0, +0.5]]
+]
+
+
+
+
+
