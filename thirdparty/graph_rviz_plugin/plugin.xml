@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<library path="lib/libgraph_rviz_plugin_line">
+  <class name="graph_rviz_plugin/Line graph"
+         type="graph_rviz_plugin::LinePanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Draw line graphs from ROS topic values
+    </description>
+  </class>
+</library>
+
+<library path="lib/libgraph_rviz_plugin_histogram">
+  <class name="graph_rviz_plugin/Histogram"
+         type="graph_rviz_plugin::HistogramPanel"
+         base_class_type="rviz::Panel">
+    <description>
+      Draw the histogram of a ROS topic image
+    </description>
+  </class>
+</library>
