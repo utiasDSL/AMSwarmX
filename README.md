@@ -54,6 +54,6 @@ This package builds upon and uses the below listed packages. Some of the  modifi
 
 
 
-##### Contact: vivek.adajania@mail.utoronto.ca
+##### Contact: vivek.adajania@robotics.utias.utoronto.ca
 For license, see ```LICENSE``` file.
 
