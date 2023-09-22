@@ -30,6 +30,16 @@ Modify configuration file ```simulation.launch``` and ```config_am_swarm.yaml```
 ```
 roslaunch amswarmx simulation.launch
 ```
+#### Example demos
+Bookstore  
+![sim_env1](amswarmx/data/media/bookstore.gif)   
+Office  
+![sim_env2](amswarmx/data/media/office.gif)
+![sim_env3](amswarmx/data/media/office\ follower.gif)   
+Random room  
+![sim_env4] (amswarmx/data/media/random\ room.gif)  
+Star room
+![sim_env5](amswarmx/data/media/star\ room.gif)  
 
 #### Acknowledgement
 This package builds upon and uses the below listed packages. Some of the  modified codes can be found in the ```thirdparty``` folder. For the rest of the packages, installation instructions are provided.
