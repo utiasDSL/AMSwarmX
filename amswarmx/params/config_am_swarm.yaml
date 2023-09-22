@@ -1,5 +1,5 @@
 # @@ Debugging Options
-verbose: 0      # Residual print = 1, 
+verbose: 1      # Residual print = 1, 
                 # DistanceToGoal check = 2, 
                 # Collision print = 3, 
                 # Total compute time print = 4, 
@@ -33,9 +33,9 @@ world:      2
 num:        40
 t_plan:     5
 num_up:     300
-dist_stop:  0.01
+dist_stop:  0.2
 free_space: true
-kappa:      5
+kappa:      10
 pieces:     1
 degree:     10
 sfcc:       false
@@ -44,7 +44,7 @@ path_replan: false
 grid_margin: 0.15
 grid_resolution: 0.1
 visibility_margin: 0.12
-distance_to_obs_margin: 0.15
+distance_to_obs_margin: 0.05
 
 # @@ Optimizer Parameters
 max_iter: 200                  
@@ -109,32 +109,23 @@ z_lim: [+0.3, 10.0]
 pos_static_obs: [[-20.0, 0.0, 0.0]]
 dim_static_obs: [[0.0001, 2.0, 10.5]]
 
-# @@ Start-Goal Configuration     
-# init_drone: [[-0.0, -0.0, +0.5]]
-
-# goal_drone: [[-0.0, -1.0, +0.5]]
-
-
-init_drone: [[-2.0, +2.0, +0.5],
-             [-0.5, +1.0, +0.5],
+# @@ Start-Goal Configuration                 
+init_drone: [[-2.0, -2.0, +0.5],
+             [-1.3, +0.3, +0.5],
              [-2.5, -2.0, +0.5],
              [+2.5, -2.0, +0.5],
              [-2.0, -1.5, +0.5],
              [+0.0, +1.5, +0.5]]
 
-goal_drone: [[0.0, +1.0, +0.5],
+goal_drone: [[+0.0, +1.0, +0.5],
              [-2.0, -2.0, +0.5],
              [+2.5, -2.0, +0.5],
              [-2.5, -2.0, +0.5],
              [+2.0, -1.5, +0.5],
              [+0.0, +1.5, +0.5]]
 
+
 anchor_points: [
-                [[-0.0, +1.0, 0.5],
-                [-0.0, +1.0, +0.5]]
+                [
+                [-2.0, +1.0, +0.5]]
 ]
-
-
-
-
-

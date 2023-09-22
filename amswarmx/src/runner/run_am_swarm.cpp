@@ -21,7 +21,7 @@ AMSwarmX :: AMSwarmX(){
     acc_z_pub = nh.advertise<std_msgs::Float64MultiArray>("accs_z", 1, true);
     marker = visualization_msgs :: Marker();    
 
-    std::mt19937 gen(3); // seed the generator
+    std::mt19937 gen(0); // seed the generator
     std::uniform_int_distribution<> distr(5, 255); // define the range
 
     world_dimension.resize(3);
@@ -475,27 +475,9 @@ void AMSwarmX :: applyControl(){
         prob_data[i].ay_init += prob_data[i].ydddot(1) * prob_data[i].dt;
         prob_data[i].az_init += prob_data[i].zdddot(1) * prob_data[i].dt;
 
-        // double acc_alpha = atan2(prob_data[i].ay_init, prob_data[i].ax_init);
-        // double acc_beta = (prob_data[i].az_init == 0.0) ? M_PI_2 : atan2((prob_data[i].ax_init/cos(acc_alpha)), prob_data[i].az_init + prob_data[i].gravity);
-        // double acc_cmd = sqrt(pow(prob_data[i].ax_init, 2) + pow(prob_data[i].ay_init, 2) + pow(prob_data[i].az_init + prob_data[i].gravity, 2)); 
-        // double saturated_acc_cmd = std :: min(acc_cmd, prob_data[i].f_max);
-      
-        // prob_data[i].ax_init = saturated_acc_cmd * cos(acc_alpha) * sin(acc_beta);
-        // prob_data[i].ay_init = saturated_acc_cmd * sin(acc_alpha) * sin(acc_beta);
-        // prob_data[i].az_init = -prob_data[i].gravity + saturated_acc_cmd * cos(acc_beta);
-
         prob_data[i].vx_init += prob_data[i].ax_init * prob_data[i].dt + 0.5 * prob_data[i].xdddot(1) * pow(prob_data[i].dt, 2);
         prob_data[i].vy_init += prob_data[i].ay_init * prob_data[i].dt + 0.5 * prob_data[i].ydddot(1) * pow(prob_data[i].dt, 2);
         prob_data[i].vz_init += prob_data[i].az_init * prob_data[i].dt + 0.5 * prob_data[i].zdddot(1) * pow(prob_data[i].dt, 2);
-
-        // double vel_alpha = atan2(prob_data[i].vy_init, prob_data[i].vx_init);
-        // double vel_beta = (prob_data[i].vz_init == 0.0) ? M_PI_2 : atan2((prob_data[i].vx_init/cos(vel_alpha)), prob_data[i].vz_init);
-        // double vel_cmd = sqrt(pow(prob_data[i].vx_init, 2) + pow(prob_data[i].vy_init, 2) + pow(prob_data[i].vz_init, 2));
-        // double saturated_vel_cmd = std :: min(vel_cmd, prob_data[i].vel_max);
-
-        // prob_data[i].vx_init = saturated_vel_cmd * cos(vel_alpha) * sin(vel_beta);
-        // prob_data[i].vy_init = saturated_vel_cmd * sin(vel_alpha) * sin(vel_beta);
-        // prob_data[i].vz_init = saturated_vel_cmd * cos(vel_beta);
 
         prob_data[i].x_init += prob_data[i].vx_init * prob_data[i].dt + 0.5 * prob_data[i].ax_init * pow(prob_data[i].dt, 2) + (1.0/6.0) * prob_data[i].xdddot(1) * pow(prob_data[i].dt, 3);
         prob_data[i].y_init += prob_data[i].vy_init * prob_data[i].dt + 0.5 * prob_data[i].ay_init * pow(prob_data[i].dt, 2) + (1.0/6.0) * prob_data[i].ydddot(1) * pow(prob_data[i].dt, 3) ;
@@ -973,41 +955,6 @@ void AMSwarmX :: publishDataAlgorithm(){
           
         }
 
-        //griddata
-        // if(i == 0 && sim_iter!=0){
-        //     int temp_index = 0;
-        //     for(int l = 0; l < prob_data[i].grid_z.rows(); l++){
-        //         for(int j = 0; j < prob_data[i].grid_y.rows(); j++){
-        //             for(int k = 0; k < prob_data[i].grid_x.rows(); k++){
-        //                 marker = visualization_msgs :: Marker();
-        //                 marker.header.frame_id = "/map";
-        //                 marker.id = temp_id++;
-        //                 marker.type = marker.SPHERE;
-        //                 marker.action = marker.ADD;
-        //                 if(prob_data[i].grid_data[temp_index]){
-        //                     marker.color.a = 1.0;
-        //                     marker.color.r = 1.0;
-        //                     marker.color.g = 0.0;
-        //                     marker.color.b = 0.0;                 
-        //                     marker.scale.x = 0.02;
-        //                     marker.scale.y = 0.02;
-        //                     marker.scale.z = 0.02;                       
-        //                     marker.pose.orientation.w = 1.0;
-        //                     marker.pose.position.x = prob_data[i].grid_x(k);
-        //                     marker.pose.position.y = prob_data[i].grid_y(j); 
-        //                     marker.pose.position.z = prob_data[i].grid_z(l); 
-        //                     agent_griddatas.markers.push_back(marker);
-        //                     temp_index++;
-        //                 }
-        //                 else{
-        //                     temp_index++;
-        //                     continue;
-        //                 }                  
-        //             }
-        //         }
-        //     }
-        // }
-
         // vels and accs
         if(i == 0){
             if(sim_iter == 0){
@@ -1125,7 +1072,7 @@ void AMSwarmX :: runIteration(){
             out_space = false;
             
             AMSwarmX :: shareInformation();
-            if(sim_iter == 1 || sim_iter == 20 || sim_iter == 50)
+            // if(sim_iter == 1 || sim_iter == 20 || sim_iter == 50)
             AMSwarmX :: publishDataIteration();
             AMSwarmX :: runAlgorithm();
             if(sim_iter % max_iter == 0){
@@ -1169,7 +1116,7 @@ void AMSwarmX :: publishDataIteration(){
     agent_griddatas.markers.clear();
     agent_gridpaths.markers.clear();
     agent_nonconvexsfcs.markers.clear(); 
-    agent_nonconvexsfcs.markers.resize(1);
+    agent_nonconvexsfcs.markers.resize(2);
 
     for(int i = 0; i < num_drone; i++){
 
@@ -1180,48 +1127,13 @@ void AMSwarmX :: publishDataIteration(){
             agent_nonconvexsfcs.markers[i].type = marker.LINE_STRIP;
             agent_nonconvexsfcs.markers[i].action = marker.ADD;
             agent_nonconvexsfcs.markers[i].scale.x = 0.05;//(2*a_drone+buffer)/2;
-            agent_nonconvexsfcs.markers[i].color.a = 1.0;
+            agent_nonconvexsfcs.markers[i].color.a = 1;
             // agent_nonconvexsfcs.markers[i].lifetime = ros::Duration(dt);
-            agent_nonconvexsfcs.markers[i].color.r = colors[i][0];
-            agent_nonconvexsfcs.markers[i].color.g = colors[i][1];
-            agent_nonconvexsfcs.markers[i].color.b = colors[i][2];
+            agent_nonconvexsfcs.markers[i].color.r = 0.5 ;//colors[i][0];
+            agent_nonconvexsfcs.markers[i].color.g = 0.0; //colors[i][1];
+            agent_nonconvexsfcs.markers[i].color.b = 0.5; //colors[i][2];
             agent_nonconvexsfcs.markers[i].pose.orientation.w = 1.0;
            
-            
-            // for(int j = 0; j < prob_data[i].alpha_sfc.rows(); j++){
-            //     double k = prob_data[i].alpha_sfc(j);
-            //     octomap::point3d origin(prob_data[i].x_anchor(0), prob_data[i].y_anchor(0), prob_data[i].z_anchor(0));
-            //     octomap::point3d direction(cos(k), sin(k), 0.0);
-            //     octomap::point3d ray_end;    
-            //     double d_sfc;
-            //     castRobot(prob_data[i], origin, direction, ray_end, d_sfc);
-
-            //     ray_end = origin + direction * (d_sfc + prob_data[i].distance_to_obs_margin);
-            //     agent_nonconvexsfcs.markers[i].points.push_back(buildPoint(ray_end.x(), ray_end.y(), ray_end.z()));
-            // }
-
-            // for(double j = prob_data[i].alpha_sfc(prob_data[i].alpha_sfc.rows()-1); j < 2* M_PI + prob_data[i].alpha_sfc(0); j+=2*M_PI/180.0)
-            // {
-            //     ROS_INFO_STREAM(j);
-            //     double k = j;
-            //     octomap::point3d origin(prob_data[i].x_anchor(0), prob_data[i].y_anchor(0), prob_data[i].z_anchor(0));
-            //     octomap::point3d direction(cos(k), sin(k), 0.0);
-            //     octomap::point3d ray_end;    
-            //     double d_sfc;
-            //     castRobot(prob_data[i], origin, direction, ray_end, d_sfc);
-
-            //     ray_end = origin + direction * (d_sfc + prob_data[i].distance_to_obs_margin);
-            //     agent_nonconvexsfcs.markers[i].points.push_back(buildPoint(ray_end.x(), ray_end.y(), ray_end.z()));
-            // }
-            // double k = prob_data[i].alpha_sfc(0);
-            //     octomap::point3d origin(prob_data[i].x_anchor(0), prob_data[i].y_anchor(0), prob_data[i].z_anchor(0));
-            //     octomap::point3d direction(cos(k), sin(k), 0.0);
-            //     octomap::point3d ray_end;    
-            //     double d_sfc;
-            //     castRobot(prob_data[i], origin, direction, ray_end, d_sfc);
-
-            //     ray_end = origin + direction * (d_sfc + prob_data[i].distance_to_obs_margin);
-            //     agent_nonconvexsfcs.markers[i].points.push_back(buildPoint(ray_end.x(), ray_end.y(), ray_end.z()));
             for(double k = 0; k <= 360.0; k=k+2){
                 octomap::point3d origin(prob_data[i].x_anchor(0), prob_data[i].y_anchor(0), prob_data[i].z_anchor(0));
                 octomap::point3d direction(cos(k*M_PI/180.0), sin(k*M_PI/180.0), 0.0);
@@ -1232,51 +1144,24 @@ void AMSwarmX :: publishDataIteration(){
                 ray_end = origin + direction * (d_sfc + prob_data[i].distance_to_obs_margin);
                 agent_nonconvexsfcs.markers[i].points.push_back(buildPoint(ray_end.x(), ray_end.y(), ray_end.z()));
             }
-        }
-        else if(i == 0 && prob_data[i].sfcc){
-            if(world == 2){
-                auto ells = prob_data[0].decomp_util2.get_ellipsoids();
-                // for(int i = 1; i < 0*num_drone; i++){
-                //     auto agent_ells = prob_data[i].decomp_util2.get_ellipsoids();
-                //     for(auto temp_ells:agent_ells)
-                //         ells.push_back(temp_ells);
-                // }
-                decomp_ros_msgs::EllipsoidArray es_msg = DecompROS::ellipsoid_array_to_ros(ells);
-                es_msg.header.frame_id = "/map";
-                es_pub.publish(es_msg);
-                
-                auto polys = prob_data[0].decomp_util2.get_polyhedrons();
-                // for(int i = 1; i < 0*num_drone; i++){
-                //     auto agent_polys = prob_data[i].decomp_util2.get_polyhedrons();
-                //     for(auto temp_polys:agent_polys)
-                //         polys.push_back(temp_polys);
-                // }
 
-                decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polys);
-                poly_msg.header.frame_id = "/map";
-                convexpoly_pub.publish(poly_msg);
-            }
-            else{
-                auto ells = prob_data[0].decomp_util.get_ellipsoids();
-                // for(int i = 1; i < 0*num_drone; i++){
-                //     auto agent_ells = prob_data[i].decomp_util.get_ellipsoids();
-                //     for(auto temp_ells:agent_ells)
-                //         ells.push_back(temp_ells);
-                // }
-                decomp_ros_msgs::EllipsoidArray es_msg = DecompROS::ellipsoid_array_to_ros(ells);
-                es_msg.header.frame_id = "/map";
-                es_pub.publish(es_msg);
-                
-                auto polys = prob_data[0].decomp_util.get_polyhedrons();
-                // for(int i = 1; i < 0*num_drone; i++){
-                //     auto agent_polys = prob_data[i].decomp_util.get_polyhedrons();
-                //     for(auto temp_polys:agent_polys)
-                //         polys.push_back(temp_polys);
-                // }
 
-                decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polys);
-                poly_msg.header.frame_id = "/map";
-                convexpoly_pub.publish(poly_msg);
+            agent_nonconvexsfcs.markers[i+1].header.frame_id = "/map";
+            agent_nonconvexsfcs.markers[i+1].ns = "SFC2"+std::to_string(i);
+            agent_nonconvexsfcs.markers[i+1].id = temp_id++;
+            agent_nonconvexsfcs.markers[i+1].type = marker.LINE_STRIP;
+            agent_nonconvexsfcs.markers[i+1].action = marker.ADD;
+            agent_nonconvexsfcs.markers[i+1].scale.x = 0.05;//(2*a_drone+buffer)/2;
+            agent_nonconvexsfcs.markers[i+1].color.a = 1.0;
+            // agent_nonconvexsfcs.markers[i].lifetime = ros::Duration(dt);
+            agent_nonconvexsfcs.markers[i+1].color.r = 1;
+            agent_nonconvexsfcs.markers[i+1].color.g = 0.5;
+            agent_nonconvexsfcs.markers[i+1].color.b = 0;
+            agent_nonconvexsfcs.markers[i+1].pose.orientation.w = 1.0;
+
+            for(int j = 0; j < prob_data[i].alpha_sfc.rows(); j++){
+                agent_nonconvexsfcs.markers[i+1].points.push_back(buildPoint(prob_data[i].x_anchor(0)+prob_data[i].d_sfc(j)*cos(prob_data[i].alpha_sfc(j)), 
+                                                prob_data[i].y_anchor(0)+prob_data[i].d_sfc(j)*sin(prob_data[i].alpha_sfc(j)), 0.5));
             }
         }
         // crazyflie dae
@@ -1286,6 +1171,7 @@ void AMSwarmX :: publishDataIteration(){
         marker.action = marker.ADD;
         marker.type = marker.MESH_RESOURCE;
         marker.mesh_use_embedded_materials = true;
+        marker.ns = "Crazyflie";
         if(sim_iter == 0)
         marker.lifetime = ros::Duration(dt);
         marker.mesh_resource = "package://amswarmx/crazyflie/meshes/crazyflie.dae";
@@ -1304,6 +1190,7 @@ void AMSwarmX :: publishDataIteration(){
         
 
         // ellipse and trajectory
+        
         // for(int j = 0; j < num; j++){
         //     marker = visualization_msgs :: Marker();
         //     marker.header.frame_id = "/map";
@@ -1311,10 +1198,10 @@ void AMSwarmX :: publishDataIteration(){
         //     marker.type = marker.SPHERE;
         //     marker.action = marker.ADD;
         //     // marker.ns = "Curr"+std::to_string(i);
-        //     marker.scale.x = 2*(a_drone) + buffer;
-        //     marker.scale.y = 2*(b_drone) + buffer;
-        //     marker.scale.z = 2*(c_drone) + buffer;
-        //     if(sim_iter == 0 || sim_iter == 50 || sim_iter == 25)
+        //     marker.scale.x = 2*(a_drone);// + buffer;
+        //     marker.scale.y = 2*(b_drone);// + buffer;
+        //     marker.scale.z = 2*(c_drone);// + buffer;
+        //     // if(sim_iter == 0 || sim_iter == 50 || sim_iter == 25)
         //         marker.lifetime = ros::Duration(10000*dt);
         //     marker.color.a = 0.5;
         
@@ -1327,7 +1214,6 @@ void AMSwarmX :: publishDataIteration(){
         //     marker.pose.position.z = agents_z(i, j); 
         //     agent_trajs.markers.push_back(marker);  
         // }
-        
         marker = visualization_msgs :: Marker();
         for(int j = 0; j < num; j++){
             marker.header.frame_id = "/map";
@@ -1336,7 +1222,7 @@ void AMSwarmX :: publishDataIteration(){
             marker.type = marker.LINE_STRIP;
             marker.action = marker.ADD;
             marker.scale.x = (a_drone) + 0*buffer/2.0;
-            marker.color.a = 0.5; 
+            marker.color.a = 1.0; 
             marker.lifetime = ros::Duration(1000*dt);
             marker.color.r = colors[i][0];
             marker.color.g = colors[i][1];
@@ -1346,30 +1232,8 @@ void AMSwarmX :: publishDataIteration(){
             marker.points.push_back(buildPoint(agents_x(i, j), agents_y(i, j), agents_z(i, j)));
         }
         agent_trajs.markers.push_back(marker);
-        
-        // start
-        marker = visualization_msgs :: Marker();
-        marker.header.frame_id = "/map";
-        marker.ns = "Start"+std::to_string(i);
-        marker.id = temp_id++;
-        marker.type = marker.SPHERE;
-        marker.action = marker.ADD;
-        marker.scale.x = 0.1;
-        marker.scale.y = 0.1;
-        marker.scale.z = 0.1;
-        //marker.lifetime = ros::Duration(dt);
-        marker.color.a = 1.0;
-        marker.color.r = 0.0;//colors[i][0];
-        marker.color.g = 0.0;//colors[i][1];
-        marker.color.b = 1.0;//colors[i][2];
-        marker.pose.orientation.w = 1.0;
-        marker.pose.position.x = _init_drone[i][0];
-        marker.pose.position.y = _init_drone[i][1]; 
-        marker.pose.position.z = _init_drone[i][2];
-        marker.text = "S"+std::to_string(i);
-        agent_startgoals.markers.push_back(marker);
 
-        // goal                
+         // goal                
         marker = visualization_msgs :: Marker();
         marker.header.frame_id = "/map";
         marker.ns = "Goal"+std::to_string(i);
@@ -1381,9 +1245,9 @@ void AMSwarmX :: publishDataIteration(){
         marker.scale.z = 0.1;
         //marker.lifetime = ros::Duration(dt);
         marker.color.a = 1.0;
-        marker.color.r = 0.5;//colors[i][0];
-        marker.color.g = 0.0;//colors[i][1];
-        marker.color.b = 0.5;//colors[i][2];
+        marker.color.r = colors[i][0];
+        marker.color.g = colors[i][1];
+        marker.color.b = colors[i][2];
         marker.pose.orientation.w = 1.0;
         marker.pose.position.x = _goal_drone[i][0];
         marker.pose.position.y = _goal_drone[i][1]; 
@@ -1391,91 +1255,70 @@ void AMSwarmX :: publishDataIteration(){
         // marker.text = "G"+std::to_string(i);
         agent_startgoals.markers.push_back(marker);
 
+        if(i == 0){
+            // anchors
+            for(int j = 0; j < pieces; j++){
+                marker = visualization_msgs :: Marker();
+                marker.header.frame_id = "/map";
+                marker.id = temp_id++;
+                marker.type = marker.CUBE;
+                marker.action = marker.ADD;
+                marker.ns = "Anchor"+std::to_string(i);
+                marker.scale.x = 0.1;//2*a_drone + buffer;
+                marker.scale.y = 0.1;//2*a_drone + buffer;
+                marker.scale.z = 0.1;//2*c_drone + buffer;
+                marker.color.a = 1.0;
+                marker.color.r = colors[i][0];
+                marker.color.g = colors[i][1];
+                marker.color.b = colors[i][2];
+                marker.pose.orientation.w = 1.0;
+                if(sim_iter == 0)
+                marker.lifetime = ros::Duration(dt);
+                marker.pose.position.x = anchor_x(i, j*num/pieces);
+                marker.pose.position.y = anchor_y(i, j*num/pieces); 
+                marker.pose.position.z = anchor_z(i, j*num/pieces);  
+                agent_anchors.markers.push_back(marker);
+            }
+            if(sim_iter!=0){
+                marker = visualization_msgs :: Marker();
+                marker.header.frame_id = "/map";
+                marker.id = temp_id++;
+                marker.type = marker.SPHERE;
+                marker.action = marker.ADD;
+                marker.ns = "InterGoal"+std::to_string(i);
+                marker.scale.x = 0.1; //2*a_drone + buffer;
+                marker.scale.y = 0.1; //2*a_drone + buffer;
+                marker.scale.z = 0.1; //2*c_drone + buffer;
+                marker.color.a = 1.0;
+                marker.color.r = colors[i][0];
+                marker.color.g = colors[i][1];;//;//colors[i][1];
+                marker.color.b = colors[i][2];;//colors[i][2];
+                //marker.lifetime = ros::Duration(dt);
+                marker.pose.orientation.w = 1.0;
+                marker.pose.position.x = prob_data[i].x_goal;
+                marker.pose.position.y = prob_data[i].y_goal; 
+                marker.pose.position.z = prob_data[i].z_goal;
+                agent_anchors.markers.push_back(marker);
 
-        // anchors
-        for(int j = 0; j < pieces; j++){
-            marker = visualization_msgs :: Marker();
-            marker.header.frame_id = "/map";
-            marker.id = temp_id++;
-            marker.type = marker.TEXT_VIEW_FACING;
-            marker.action = marker.ADD;
-            marker.ns = "Anchor"+std::to_string(i);
-            marker.scale.x = 0.15;
-            marker.scale.y = 0.15;
-            marker.scale.z = 0.15;
-            marker.color.a = 1.0;
-            marker.color.r = 0.0;//colors[i][0];
-            marker.color.g = 0.0;//colors[i][1];
-            marker.color.b = 0.0;//colors[i][2];
-            marker.pose.orientation.w = 1.0;
-            //marker.lifetime = ros::Duration(dt);
-            marker.pose.position.x = anchor_x(i, j*num/pieces);
-            marker.pose.position.y = anchor_y(i, j*num/pieces); 
-            marker.pose.position.z = anchor_z(i, j*num/pieces) +0.0022;
-            marker.text = "A";//+std::to_string(i)+std::to_string(j);
-            agent_anchors.markers.push_back(marker);
-
-            marker = visualization_msgs :: Marker();
-            marker.header.frame_id = "/map";
-            marker.id = temp_id++;
-            marker.type = marker.CYLINDER;
-            marker.action = marker.ADD;
-            marker.ns = "Anchor"+std::to_string(i);
-            marker.scale.x = 2*(a_drone) + buffer;
-            marker.scale.y = 2*(a_drone) + buffer;
-            marker.scale.z = 2*(c_drone) + buffer;
-            marker.color.a = 1.0;
-            marker.color.r = 1.0;//colors[i][0];
-            marker.color.g = 1.0;//colors[i][1];
-            marker.color.b = 0.0;//colors[i][2];
-            marker.pose.orientation.w = 1.0;
-            //marker.lifetime = ros::Duration(dt);
-            marker.pose.position.x = anchor_x(i, j*num/pieces);
-            marker.pose.position.y = anchor_y(i, j*num/pieces); 
-            marker.pose.position.z = anchor_z(i, j*num/pieces) +0.0011;  
-            agent_anchors.markers.push_back(marker);
-        }
-        if(sim_iter!=0){
-            marker = visualization_msgs :: Marker();
-            marker.header.frame_id = "/map";
-            marker.id = temp_id++;
-            marker.type = marker.TEXT_VIEW_FACING;
-            marker.action = marker.ADD;
-            marker.ns = "InterGoal"+std::to_string(i);
-            marker.scale.x = 0.15;
-            marker.scale.y = 0.15;
-            marker.scale.z = 0.15;
-             //marker.lifetime = ros::Duration(dt);
-            marker.color.a = 1.0;
-            marker.color.r = 0.0;//colors[i][0];
-            marker.color.g = 0.0;//colors[i][1];
-            marker.color.b = 0.0;//colors[i][2];
-            marker.pose.orientation.w = 1.0;
-            marker.pose.position.x = prob_data[i].x_goal;
-            marker.pose.position.y = prob_data[i].y_goal;  
-            marker.pose.position.z = prob_data[i].z_goal+0.0022;
-            marker.text = "IG";//+std::to_string(i);
-            agent_anchors.markers.push_back(marker);
-
-            marker = visualization_msgs :: Marker();
-            marker.header.frame_id = "/map";
-            marker.id = temp_id++;
-            marker.type = marker.CYLINDER;
-            marker.action = marker.ADD;
-            marker.ns = "InterGoal"+std::to_string(i);
-            marker.scale.x = 2*(a_drone) + buffer;
-            marker.scale.y = 2*(a_drone) + buffer;
-            marker.scale.z = 2*(c_drone) + buffer;
-             //marker.lifetime = ros::Duration(dt);
-            marker.color.a = 1.0;
-            marker.color.r = 0.5;//colors[i][0];
-            marker.color.g = 0.0;//colors[i][1];
-            marker.color.b = 0.5;//colors[i][2];
-            marker.pose.orientation.w = 1.0;
-            marker.pose.position.x = prob_data[i].x_goal;
-            marker.pose.position.y = prob_data[i].y_goal; 
-            marker.pose.position.z = prob_data[i].z_goal +0.0011;
-            agent_anchors.markers.push_back(marker);
+                marker = visualization_msgs :: Marker();
+                marker.header.frame_id = "/map";
+                marker.id = temp_id++;
+                marker.type = marker.TEXT_VIEW_FACING;
+                marker.action = marker.ADD;
+                marker.ns = "Iters"+std::to_string(i);
+                marker.text = "Iteration " + std::to_string(sim_iter);
+                marker.scale.z = 0.35; //2*c_drone + buffer;
+                marker.color.a = 1.0;
+                marker.color.r = 0;//colors[i][0];
+                marker.color.g = 0;//colors[i][1];;//;//colors[i][1];
+                marker.color.b = 0;//colors[i][2];;//colors[i][2];
+                //marker.lifetime = ros::Duration(dt);
+                marker.pose.orientation.w = 1.0;
+                marker.pose.position.x = 1.5;
+                marker.pose.position.y = 2.0; 
+                marker.pose.position.z = 0.5;
+                agent_anchors.markers.push_back(marker);
+            }
         }
         
         // path

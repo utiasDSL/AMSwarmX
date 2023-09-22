@@ -1,6 +1,2 @@
 /.vscode/
-/data/point_to_point/
-/data/point_to_point.zip
-/data/point_to_point_with_residuals.zip
 /data/bag
-/build/

@@ -406,21 +406,21 @@ void initializeOptimizer(probData &prob_data, int VERBOSE){
 	
 
 	prob_data.x = prob_data.x_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
-	prob_data.x_anchor =  prob_data.x_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
+	prob_data.x_anchor =  prob_data.anchor_points[0][0] * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);//prob_data.x_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
 	prob_data.xdot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.xddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.xdddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.xddddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 
 	prob_data.y = prob_data.y_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
-	prob_data.y_anchor =  prob_data.y_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
+	prob_data.y_anchor =  prob_data.anchor_points[0][1] * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);//prob_data.y_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
 	prob_data.ydot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.yddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.ydddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.yddddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 
 	prob_data.z = prob_data.z_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
-	prob_data.z_anchor = prob_data.z_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
+	prob_data.z_anchor = prob_data.anchor_points[0][2] * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);//prob_data.z_init * Eigen :: ArrayXXd :: Ones(prob_data.num, 1);
 	prob_data.zdot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.zddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
 	prob_data.zdddot = Eigen :: ArrayXXd :: Zero(prob_data.num, 1);
@@ -429,12 +429,12 @@ void initializeOptimizer(probData &prob_data, int VERBOSE){
 	prob_data.num_drone = 0;
 	prob_data.num_static_obs = 0;
 
-	// if(prob_data.world == 2)
-	// 		getGrid2DPath(prob_data, VERBOSE);
-	// else if(prob_data.world == 3)
-	// 		getGrid3DPath(prob_data, VERBOSE);
-	// else 
-	// 	ROS_INFO_STREAM("Not using grid planner");
+	if(prob_data.world == 2)
+			getGrid2DPath(prob_data, VERBOSE);
+	else if(prob_data.world == 3)
+			getGrid3DPath(prob_data, VERBOSE);
+	else 
+		ROS_INFO_STREAM("Not using grid planner");
 }
 
 void deployAgent(probData &prob_data, int VERBOSE){

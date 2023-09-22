@@ -58,7 +58,7 @@ void getGrid2DPath(probData &prob_data, int VERBOSE){
 		prob_data.grid_path.clear();
 		prob_data.anchor_points.clear();
 		
-		// if(prob_data.sfcc)
+		if(prob_data.sfcc)
 		{
 			// Set up DMP planner
 			DMPlanner2D dmp(false);
