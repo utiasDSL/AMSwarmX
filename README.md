@@ -53,6 +53,7 @@ This package builds upon and uses the below listed packages. Some of the  modifi
 * [graph_rviz_plugin](https://gitlab.com/InstitutMaupertuis/graph_rviz_plugin)
 
 
-Contact: vivek.adajania@mail.utoronto.ca
 
+##### Contact: vivek.adajania@mail.utoronto.ca
+For license, see ```LICENSE``` file.
 
