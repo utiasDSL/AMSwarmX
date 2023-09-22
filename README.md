@@ -36,8 +36,8 @@ roslaunch amswarmx simulation.launch
 * Office  
 ![sim_env2](amswarmx/media/office.gif) ![sim_env3](amswarmx/media/office_follower.gif)   
 * Random room  
-![sim_env4](amswarmx/media/random_room.gif)  
-* Star room
+![sim_env4](amswarmx/media/random_room.gif)    
+* Star room  
 ![sim_env5](amswarmx/media/star_room.gif)  
 
 #### Acknowledgement
