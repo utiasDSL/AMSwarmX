@@ -65,12 +65,12 @@ else ()
 endif ()
 
 
-find_package(jsoncpp REQUIRED)
-if (jsoncpp_FOUND)
-  message(STATUS "Package 'jsoncpp' found.")
-else ()
-  message(FATAL_ERROR "Package 'jsoncpp' not found.")
-endif ()
+# find_package(jsoncpp REQUIRED)
+# if (jsoncpp_FOUND)
+#   message(STATUS "Package 'jsoncpp' found.")
+# else ()
+#   message(FATAL_ERROR "Package 'jsoncpp' not found.")
+# endif ()
 
 
 find_package(dynamicEDT3D REQUIRED)
@@ -123,7 +123,7 @@ add_executable(swarm_am_nav src/main_am_swarm.cpp)
 target_link_libraries(swarm_am_nav 
                       lib_am_swarm 
                       yaml-cpp 
-                      jsoncpp 
+                      # jsoncpp 
                       ${DECOMP_ROS_UTILS_INCLUDE_DIRS} 
                       ${JPS3D_LIBRARIES} 
                       ${catkin_LIBRARIES} 

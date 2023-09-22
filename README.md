@@ -1,9 +1,6 @@
-YET TO ADD INSTRUCTIONS
-
-
 ### AMSwarmX 
-Repository associated with the paper "to_be_named" submitted to "add_conference".
-
+Repository associated with the paper "AMSwarmX: Safe Swarm Coordination in CompleX Environments via
+Implicit Non-Convex Decomposition of the Obstacle-Free Space" submitted to IEEE ICRA 2024.
 
 #### Installation
 
@@ -26,6 +23,13 @@ source devel_isolated/setup.bash
 catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 source devel_isolated/setup.bash
 ```
+* Supported distro melodic and noetic.
+
+#### Run
+Modify configuration file ```simulation.launch``` and ```config_am_swarm.yaml``` as you like. Then run:
+```
+roslaunch amswarmx simulation.launch
+```
 
 #### Acknowledgement
 This package builds upon and uses the below listed packages. Some of the  modified codes can be found in the ```thirdparty``` folder. For the rest of the packages, installation instructions are provided.
@@ -36,8 +40,10 @@ This package builds upon and uses the below listed packages. Some of the  modifi
 * [DecompROS](https://github.com/sikang/DecompROS)
 * [octomap](https://github.com/OctoMap/octomap)
 * [Eigen3](https://eigen.tuxfamily.org/index.php?title=Main_Page)
-* [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
 * [catkin_simple](https://github.com/catkin/catkin_simple)
 * [graph_rviz_plugin](https://gitlab.com/InstitutMaupertuis/graph_rviz_plugin)
+
+
+Contact: vivek.adajania@mail.utoronto.ca
 
 

@@ -5,19 +5,9 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Status1
-        - /Trajs1
-        - /Trajs1/Namespaces1
-        - /StartGoals1
-        - /Anchors1
-        - /Anchors1/Namespaces1
-        - /Paths1
+        - /Attractors1/Namespaces1
         - /Paths1/Namespaces1
-        - /GridPaths1
         - /GridPaths1/Namespaces1
-        - /ConvexPoly1
-        - /NonConvexSFC1
-        - /NonConvexSFC1/Namespaces1
-        - /CubioidSFC1
       Splitter Ratio: 0.5
     Tree Height: 728
   - Class: rviz/Selection
@@ -163,6 +153,8 @@ Visualization Manager:
       Name: Trajs
       Namespaces:
         Crazyflie: true
+        Ellipse: true
+        Sphere: true
         Trajectory: true
       Queue Size: 100
       Value: true
@@ -177,11 +169,10 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /anchors
-      Name: Anchors
+      Name: Attractors
       Namespaces:
         Anchor0: true
         InterGoal0: true
-        Iters0: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -190,6 +181,15 @@ Visualization Manager:
       Name: Paths
       Namespaces:
         Path0: true
+        Path1: true
+        Path2: true
+        Path3: true
+        Path4: true
+        Path5: true
+        Path6: true
+        Path7: true
+        Path8: true
+        Path9: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -209,13 +209,13 @@ Visualization Manager:
       Queue Size: 100
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /boundaries
       Name: Boundary
       Namespaces:
         {}
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 0.20000000298023224
       BoundColor: 252; 175; 62
       Class: decomp_rviz_plugins/PolyhedronArray
@@ -230,42 +230,9 @@ Visualization Manager:
       VsColor: 0; 255; 0
       VsScale: 1
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /nonconvex_sfc
       Name: NonConvexSFC
-      Namespaces:
-        SFC0: true
-        SFC20: false
-      Queue Size: 100
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /mav0_collision_constraints_vis
-      Name: CubioidSFC
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
-    - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /mav0_collision_constraints_vis
-      Name: MarkerArray
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
-    - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /mav0_collision_constraints_vis
-      Name: MarkerArray
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
-    - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /startgoals
-      Name: StartGoals
       Namespaces:
         {}
       Queue Size: 100
@@ -297,21 +264,26 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 1.1175870895385742e-8
-      Class: rviz/TopDownOrtho
+      Class: rviz/XYOrbit
+      Distance: 10
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 117.40577697753906
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Value: TopDownOrtho (rviz)
-      X: -0.11858192831277847
-      Y: 0.0266183540225029
+      Value: XYOrbit (rviz)
+      Yaw: 4.248575210571289
     Saved: ~
 Window Geometry:
   Accs:

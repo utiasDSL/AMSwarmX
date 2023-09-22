@@ -17,9 +17,7 @@ int main(int argc, char **argv)
 
     
     ros::init(argc, argv, "swarm_am_nav");
-    
     int success_trials = 0, total_trials = 1;
-
     for(int i = 0; i < total_trials; i++){
         ROS_INFO_STREAM("================== Configuration " << i << " =====================");
         AMSwarmX sim = AMSwarmX();
@@ -34,10 +32,6 @@ int main(int argc, char **argv)
         else{
             sim.json_name = "config";
             sim.result_name = "config";
-        }
-        if(sim.write_files){
-            // sim.writeLAUNCH();
-            sim.writeJSON();
         }
         if(!sim.visualize_am)
             sim.runSimulation();

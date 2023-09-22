@@ -148,7 +148,6 @@ AMSwarmX :: AMSwarmX(){
         _goal_drone = temp_goal_drone;
     }
 
-    _anchor_points = params["anchor_points"].as< std :: vector<std::vector<std :: vector<double>>>>();
     _pos_static_obs = params["pos_static_obs"].as< std :: vector<std::vector<double>>>();
     _dim_static_obs = params["dim_static_obs"].as< std :: vector<std::vector<double>>>();
     
@@ -179,7 +178,6 @@ AMSwarmX :: AMSwarmX(){
         prob_data[i].yf_goal = _goal_drone[i][1];
         prob_data[i].zf_goal = _goal_drone[i][2];
         
-        prob_data[i].anchor_points = _anchor_points[i];
         prob_data[i].pos_static_obs = _pos_static_obs;
         prob_data[i].dim_static_obs = _dim_static_obs;
         
@@ -198,157 +196,6 @@ AMSwarmX :: AMSwarmX(){
         colors.push_back({distr(gen)/255.0, distr(gen)/255.0, distr(gen)/255.0});
     }
     
-}
-
-void AMSwarmX :: writeLAUNCH(){
-    std::ofstream launchFile;
-    launchFile.open(package_path+"/data/" + json_name + ".launch");
-
-    if (launchFile.is_open()) {
-        launchFile << "<launch>\n\n";
-        launchFile << "  <arg name=\"world_frame_id\" default=\"world\"/>\n";
-        launchFile << "  <arg name=\"world_file_name\" default=\"" << world_file_name << "\"/>\n";
-        launchFile << "  <arg name=\"world_resolution\" default=\"" << world_resolution << "\"/>\n";
-        launchFile << "  <node pkg=\"octomap_server\" type=\"octomap_server_node\" name=\"octomap_server\"\n";
-        launchFile << "      args=\"$(find plan_env)/world/$(arg world_file_name)\">\n";
-        launchFile << "    <param name=\"resolution\"                 value=\"$(arg world_resolution)\" />\n";
-        launchFile << "    <param name=\"frame_id\"                   value=\"$(arg world_frame_id)\" type=\"string\"/>\n";
-        launchFile << "    <param name=\"sensor_model/max_range\"     value=\"50.0\" />\n";
-        launchFile << "    <param name=\"height_map\"                 value=\"false\"/>\n";
-        launchFile << "    <param name=\"color/r\"                    value=\"0.2\" />\n";
-        launchFile << "    <param name=\"color/g\"                    value=\"0.2\" />\n";
-        launchFile << "    <param name=\"color/b\"                    value=\"0.2\" />\n";
-        launchFile << "    <param name=\"color/a\"                    value=\"0.2\" />\n";
-        launchFile << "  </node>\n\n";
-
-        launchFile << "  <arg name=\"map_size_x\" value=\"" << x_max-x_min << "\"/>\n"; 
-        launchFile << "  <arg name=\"map_size_y\" value=\"" << y_max-y_min << "\"/>\n";
-        launchFile << "  <arg name=\"map_size_z\" value=\"" << z_max-z_min << "\"/>\n";
-        launchFile << "  <arg name=\"odom_topic\" value=\"visual_slam/odom\" />\n";
-       
-        
-        // Customizable values for init_x, init_y, init_z, target_x, target_y, target_z
-        for(int i = 0; i < num_drone; i++){
-            launchFile << "  <include file=\"$(find ego_planner)/launch/run_in_sim.launch\">\n";
-            launchFile << "    <arg name=\"drone_id\" value=\"" << i << "\"/>\n";
-            launchFile << "    <arg name=\"init_x\" value=\"" << _init_drone[i][0] << "\"/>\n";
-            launchFile << "    <arg name=\"init_y\" value=\"" << _init_drone[i][1] << "\"/>\n";
-            launchFile << "    <arg name=\"init_z\" value=\"" << _init_drone[i][2] << "\"/>\n\n";
-            launchFile << "    <arg name=\"target_x\" value=\"" << _goal_drone[i][0] << "\"/>\n";
-            launchFile << "    <arg name=\"target_y\" value=\"" << _goal_drone[i][1] << "\"/>\n";
-            launchFile << "    <arg name=\"target_z\" value=\"" << _goal_drone[i][2] << "\"/>\n\n";
-            
-            launchFile << "    <arg name=\"map_size_x\" value=\"$(arg map_size_x)\"/>\n";
-            launchFile << "    <arg name=\"map_size_y\" value=\"$(arg map_size_y)\"/>\n";
-            launchFile << "    <arg name=\"map_size_z\" value=\"$(arg map_size_z)\"/>\n";
-            launchFile << "    <arg name=\"odom_topic\" value=\"$(arg odom_topic)\"/>\n";
-            launchFile << "  </include>\n";
-        }
-        launchFile << "</launch>\n";
-
-        launchFile.close();
-        std::cout << "Launch file created successfully!" << std::endl;
-    } else {
-        std::cout << "Failed to create launch file." << std::endl;
-    }
-} 
-
-void AMSwarmX :: writeJSON(){
-
-    double vel_max = params["vel_max"].as<double>()/sqrt(3);
-    double gravity = params["gravity"].as<double>();
-    double f_min = params["f_min"].as<double>() * gravity;
-    double f_max = params["f_max"].as<double>() * gravity;
-    double acc_max = (-(2*gravity) + sqrt(pow(2*gravity,2) - 4*3*(pow(gravity,2) - pow(f_max,2))))/6.0; 
-    double z_acc_min = f_min - gravity;
-
-    // Create the JSON root object
-    Json::Value root;
-
-    // Create the "quadrotors" object
-    Json::Value quadrotors;
-    Json::Value crazyflie;
-    Json::Value default_quad;
-
-    // Fill in the values for "crazyflie" quadrotor
-    crazyflie["max_vel"].append(vel_max);
-    crazyflie["max_vel"].append(vel_max);
-    crazyflie["max_vel"].append(vel_max);
-    crazyflie["max_acc"].append(acc_max);
-    crazyflie["max_acc"].append(acc_max);
-    crazyflie["max_acc"].append(z_acc_min);
-    crazyflie["radius"] = a_drone;
-    crazyflie["nominal_velocity"] = vel_max;
-    crazyflie["downwash"] = c_drone/a_drone;
-
-    // Fill in the values for "default" quadrotor
-    default_quad["max_vel"].append(vel_max);
-    default_quad["max_vel"].append(vel_max);
-    default_quad["max_vel"].append(vel_max);
-    default_quad["max_acc"].append(acc_max);
-    default_quad["max_acc"].append(acc_max);
-    default_quad["max_acc"].append(z_acc_min);
-    default_quad["radius"] = a_drone;
-    default_quad["nominal_velocity"] = vel_max;
-    default_quad["downwash"] = c_drone/a_drone;
-
-    // Add "crazyflie" and "default" objects to "quadrotors"
-    quadrotors["crazyflie"] = crazyflie;
-    quadrotors["default"] = default_quad;
-
-    // Add "quadrotors" object to the root
-    root["quadrotors"] = quadrotors;
-
-    // Create the "world" array
-    Json::Value world;
-    Json::Value dimension;
-    
-    // Fill in the values for "dimension"
-    dimension["dimension"].append(x_min+a_drone);
-    dimension["dimension"].append(y_min+a_drone);
-    dimension["dimension"].append(z_min+4*a_drone);
-    dimension["dimension"].append(x_max-a_drone);
-    dimension["dimension"].append(y_max-a_drone);
-    dimension["dimension"].append(z_max-a_drone);
-    
-    // Add "dimension" to "world"
-    world.append(dimension);
-    // Add "world" array to the root
-    root["world"] = world;
-
-    // Create the "agents" array
-    Json::Value agents;
-    
-    // Fill in the values for "agents"
-    for (int i = 0; i < num_drone; i++) {
-        Json::Value agent;
-        agent["type"] = "crazyflie";
-        agent["cid"] = i+1;
-        agent["start"].append(_init_drone[i][0]);
-        agent["start"].append(_init_drone[i][1]);
-        agent["start"].append(_init_drone[i][2]);
-        agent["goal"].append(_goal_drone[i][0]);
-        agent["goal"].append(_goal_drone[i][1]);
-        agent["goal"].append(_goal_drone[i][2]);
-        agents.append(agent);
-    }
-    
-    // Add "agents" array to the root
-    root["agents"] = agents;
-
-    // Create the "obstacles" array
-    Json::Value obstacles(Json::arrayValue);
-    
-    // Add "obstacles" array to the root
-    root["obstacles"] = obstacles;
-
-    ROS_INFO_STREAM("Saving JSON file");
-    // Save the JSON to a file
-     // Save the JSON to a file without line breaks
-    std::ofstream configFile(package_path+"/data/" + json_name + ".json");
-    configFile << std::fixed << std::setprecision(4);
-    configFile << root;
-    configFile.close();
 }
 
 void AMSwarmX :: shareInformation(){

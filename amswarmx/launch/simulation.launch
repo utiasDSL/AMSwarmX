@@ -4,7 +4,7 @@
   <!-- <node pkg="rosbag" type="record" name="rosbag_record" args="record -a -o $(find amswarmx)/data/bag/"/>    -->
 
   <arg name="world_frame_id" default="map"/> <!--  -->
-  <arg name="world_file_name" default="simple/simple_corridor.bt"/> <!-- Octomap file name, it must be bt file -->
+  <arg name="world_file_name" default="room.bt"/> <!-- Octomap file name, it must be bt file -->
   <arg name="world_resolution" default="0.1"/> 
   <arg name="display_freq" default="10"/> 
   <arg name="display_sim" default="true" />

@@ -1,62 +1,60 @@
 # @@ Debugging Options
-verbose: 1      # Residual print = 1, 
-                # DistanceToGoal check = 2, 
-                # Collision print = 3, 
-                # Total compute time print = 4, 
-                # Individual compute time print = 5, 
-                # Grid planner verbose print = 6
+verbose: 0                                            # Residual print = 1, 
+                                                      # DistanceToGoal check = 2, 
+                                                      # Collision print = 3, 
+                                                      # Total compute time print = 4, 
+                                                      # Individual compute time print = 5, 
+                                                      # Grid planner verbose print = 6
 
-castray: false   # if false cast with robot radius 
+castray: false                                        # If false cast with robot radius 
 
-# @@
-visualize_am: true
-camera_follow_drone: 0
+visualize_am: false                                   # If true visualize output at each iteration
+camera_follow_drone: 0                                # Camera follower drones
 
 # @@ Setting
-random_config: false    # random or default
-num_drone:     1
-cluster:       1       # number of drones in to solve in a single thread
-trials:        1
-write_files:   false
+random_config: true                                   # random or default
+num_drone:     10                                     # number of drones
+cluster:       1                                      # num_drone to solve in a single thread
+trials:        1                                      # number of runs
 
-num_obs: 1     
+# @@ Unused params
+write_files:   false                                  # option no longer available
+num_obs: 1                                            # option no longer available
+axis_wise: false                                      # option no longer available
 
-# @@ For axis_wise set true otherwise quadratic
-axis_wise: false     
-jerk_snap_constraints: false
-
-# @@ CBF 
-gamma: 1.0
 
 # @@ Planning Parameters
-world:      2
-num:        40
-t_plan:     5
-num_up:     300
-dist_stop:  0.2
-free_space: true
-kappa:      10
-pieces:     1
-degree:     10
-sfcc:       false
-jps:        false
-path_replan: false 
-grid_margin: 0.15
-grid_resolution: 0.1
-visibility_margin: 0.12
-distance_to_obs_margin: 0.05
+world:      3                                         # world dimension
+num:        40                                        # number of planning steps or prediction horizon
+t_plan:     3                                         # planning time
+num_up:     300                                       # upsampling num
+dist_stop:  0.2                                       # distance to stop tolerance
+free_space: true                                      # 
+kappa:      10                                        # kappa in error-to-goal cost
+pieces:     1                                         # pieces of bernstein polynomial (DO NOT CHANGE)
+degree:     10                                        # degree of bernstein polynomial (DO NOT CHANGE)
+sfcc:       false                                     # use convex polyhedra (true) or proposed (false)
+jps:        false                                     # use JPS (true) or A* (false)
+path_replan: false                                    # use path planner at every planning step
+grid_margin: 0.15                                     # buffer used during grid construction
+grid_resolution: 0.1                                  # grid resolution
+visibility_margin: 0.12                               # visibility check buffer
+distance_to_obs_margin: 0.15                          # distance to obstacle buffer
+jerk_snap_constraints: false                          # enable jerk and snap constraints
+gamma: 1.0                                            # gamma parameter in barrier function constraints [0, 1]
+
 
 # @@ Optimizer Parameters
-max_iter: 200                  
-max_time: 60
-thresold: 0.005
+max_iter: 200                                         # alternating minimization iterations        
+max_time: 60                                          # maximum simulation time
+thresold: 0.005                                       # convergence thresold
 
-order_smoothness:  3
-weight_goal:       5000    
-weight_smoothness: 150
-delta_aggressive:  1.0
+order_smoothness:  3                                  # smoothness cost (q == 3 jerk, q == 4 snap)
+weight_goal:       5000                               # goal cost weight
+weight_smoothness: 150                                # smoothness cost weight
+delta_aggressive:  1.0                                # option no longer available
 
-delta_static_obs: 1.20
+delta_static_obs: 1.20                                # delta penalty weight 
 delta_drone:      1.15
 delta_vel:        1.33
 delta_acc:        1.30
@@ -65,7 +63,7 @@ delta_snap:       1.30
 delta_ineq:       1.30
 delta_sfc:        1.25
 
-rho_static_obs_max: 200000
+rho_static_obs_max: 200000                            # maximum penalty weight
 rho_drone_max:      200000
 rho_vel_max:        200000
 rho_acc_max:        200000
@@ -74,38 +72,32 @@ rho_snap_max:       200000
 rho_ineq_max:       200000
 rho_sfc_max:        200000
 
-# true kinematic values
-vel_max: 1.5
-jerk_max: 8.0
-snap_max: 8.0
+vel_max: 1.5                                          # maximum velocity
+jerk_max: 8.0                                         # maximum jerk
+snap_max: 8.0                                         # maximum snap
 
-# scaled thrust values 
-use_thrust_values: true
+use_thrust_values: true                               
 gravity: 9.8
 f_max: 1.5    # 1.5g
 f_min: 0.3    # 0.3g
 
-
 acc_max: 2.8
 
-prox_agent: 0.2
-prox_obs: 0.2
-
-buffer: 0.07
-
 # @@ Crazyflie Configuration 
-a_drone: 0.10
-b_drone: 0.10
-c_drone: 0.20
+a_drone: 0.10                                         # quadrotor x-dimension
+b_drone: 0.10                                         # quadrotor y-dimension
+c_drone: 0.20                                         # quadrotor z-dimension
 
+prox_agent: 0.2                                       # distance parameter used to select neighbour
+prox_obs: 0.2                                         # option no longer available
+buffer: 0.07                                          # buffer for inter-agent collision
 
 # @@ Room limits
-x_lim: [-150.0, 150.0]
+x_lim: [-150.0, 150.0]                                # these room limits will be replaced by the Octomap world size
 y_lim: [-150.0, 150.0]
 z_lim: [+0.3, 10.0]
 
-
-# @@ Obstacle Configuration 
+# @@ Cylindircal Obstacle Configuration               # option no longer available
 pos_static_obs: [[-20.0, 0.0, 0.0]]
 dim_static_obs: [[0.0001, 2.0, 10.5]]
 
@@ -123,9 +115,3 @@ goal_drone: [[+0.0, +1.0, +0.5],
              [-2.5, -2.0, +0.5],
              [+2.0, -1.5, +0.5],
              [+0.0, +1.5, +0.5]]
-
-
-anchor_points: [
-                [
-                [-2.0, +1.0, +0.5]]
-]

@@ -5,7 +5,7 @@
 #include <thread>
 #include <random>
 
-#include "jsoncpp/json/json.h"
+// #include "jsoncpp/json/json.h"
 #include <ros/package.h>
 #include <ros/ros.h>
 #include <octomap/octomap.h>
@@ -34,8 +34,6 @@ class AMSwarmX{
         probData *prob_data;
 
         AMSwarmX();
-        void writeJSON();
-        void writeLAUNCH();
         void runSimulation();
         void runIteration();
         void saveMetrics();
