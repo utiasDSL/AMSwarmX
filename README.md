@@ -1,6 +1,6 @@
 ### AMSwarmX 
 Repository associated with the paper "AMSwarmX: Safe Swarm Coordination in CompleX Environments via
-Implicit Non-Convex Decomposition of the Obstacle-Free Space" submitted to IEEE ICRA 2024.
+Implicit Non-Convex Decomposition of the Obstacle-Free Space" **accepted** to IEEE ICRA 2024.
 
 #### Installation
 
