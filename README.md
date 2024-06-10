@@ -16,7 +16,7 @@ sudo apt install libeigen3-dev
 ```
 cd catkin_ws/src/
 git clone https://github.com/utiasDSL/AMSwarmX
-mv AMSwarmX/* . && rm -rf AMSwarm
+mv AMSwarmX/* . && rm -rf AMSwarmX
 ```
 * Build only the `thirdparty` package:
 ```
