@@ -4,7 +4,7 @@ Implicit Non-Convex Decomposition of the Obstacle-Free Space" **accepted** to IE
 
 #### Installation
 
-* Install packages (supported distro melodic and noetic.):
+* Install packages (supported distro `melodic` and `noetic`):
 ```
 sudo apt-get install ros-<distro>-octomap
 sudo apt-get install ros-<distro>-octomap-server
