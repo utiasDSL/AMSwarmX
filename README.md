@@ -4,8 +4,7 @@ Implicit Non-Convex Decomposition of the Obstacle-Free Space" **accepted** to IE
 
 #### Installation
 
-* Clone the repository
-* Run the following commands
+* Install packages:
 ```
 sudo apt-get install ros-<distro>-octomap
 sudo apt-get install ros-<distro>-octomap-server
@@ -13,16 +12,26 @@ sudo apt-get install ros-<distro>-octomap-ros
 sudo apt-get install ros-<distro>-dynamic-edt-3d
 sudo apt install libeigen3-dev
 ```
-* CATKIN_IGNORE and build the ```thirdparty``` package and source:
+* Clone the repository:
 ```
+cd catkin_ws/src/
+git clone https://github.com/utiasDSL/AMSwarmX
+mv AMSwarmX/* . && rm -rf AMSwarm
+```
+* Build only the `thirdparty` package:
+```
+touch amswarmx/CATKIN_IGNORE
+cd ..
 catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 source devel_isolated/setup.bash
 ```
-* Build the ```amswarmx``` package
+* Once `thirdparty` is built and source, build `amswarmx`:
 ```
+rm src/amswarmx/CATKIN_IGNORE
 catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 source devel_isolated/setup.bash
 ```
+
 * Supported distro melodic and noetic.
 
 #### Run
