@@ -4,7 +4,7 @@ Implicit Non-Convex Decomposition of the Obstacle-Free Space" **accepted** to IE
 
 #### Installation
 
-* Install packages:
+* Install packages (supported distro melodic and noetic.):
 ```
 sudo apt-get install ros-<distro>-octomap
 sudo apt-get install ros-<distro>-octomap-server
@@ -31,8 +31,6 @@ rm src/amswarmx/CATKIN_IGNORE
 catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 source devel_isolated/setup.bash
 ```
-
-* Supported distro melodic and noetic.
 
 #### Run
 Modify configuration file ```simulation.launch``` and ```config_am_swarm.yaml``` as you like. Then run:
